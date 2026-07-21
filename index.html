@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sam's Radiator Repair Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #e2e8f0;
+      line-height: 1.7;
+      overflow-x: hidden;
+      background: #050508;
+    }
+
+    /* ========== NAVIGATION ========== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(5,5,8,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(200,30,30,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .nav-logo {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: #c81e1e; }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #c81e1e;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #020204 0%, #0a0a12 40%, #0d1020 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(200,30,30,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(30,58,138,0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 850px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(200,30,30,0.1);
+      border: 1px solid rgba(200,30,30,0.25);
+      color: #c81e1e;
+      padding: 0.5rem 1.8rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 1.2rem;
+      line-height: 1.05;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 span {
+      color: #c81e1e;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: #c81e1e;
+      color: white;
+      box-shadow: 0 8px 30px rgba(200,30,30,0.25);
+    }
+
+    .btn-primary:hover {
+      background: #a81818;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(200,30,30,0.35);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: rgba(255,255,255,0.8);
+      border: 1.5px solid rgba(255,255,255,0.15);
+    }
+
+    .btn-secondary:hover {
+      border-color: #c81e1e;
+      color: #c81e1e;
+      transform: translateY(-2px);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.3);
+      animation: bounce 2.5s infinite;
+      cursor: pointer;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-12px); }
+      60% { transform: translateX(-50%) translateY(-6px); }
+    }
+
+    /* ========== SECTIONS COMMON ========== */
+    .section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-dark {
+      background: #08080c;
+    }
+
+    .section-darker {
+      background: #030305;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 0.8rem;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .section-title span { color: #c81e1e; }
+
+    .section-subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 1rem;
+      margin-bottom: 3.5rem;
+      max-width: 550px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 300;
+    }
+
+    .section-label {
+      text-align: center;
+      color: #c81e1e;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    /* ========== STORY SECTION ========== */
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .story-image {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+    }
+
+    .img-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #0d0d15 0%, #151520 100%);
+      border: 2px dashed rgba(200,30,30,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.25);
+      font-size: 0.85rem;
+      gap: 0.5rem;
+    }
+
+    .img-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .img-placeholder .label { font-weight: 600; letter-spacing: 1px; }
+    .img-placeholder .hint { font-size: 0.75rem; opacity: 0.5; }
+
+    .story-content h3 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .story-content h3 span { color: #c81e1e; }
+
+    .story-content p {
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1.2rem;
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    .story-quote {
+      border-left: 3px solid #c81e1e;
+      padding-left: 1.5rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      color: rgba(255,255,255,0.7);
+      font-size: 1.05rem;
+    }
+
+    .story-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stat {
+      text-align: left;
+    }
+
+    .stat-number {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #c81e1e;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 0.4rem;
+    }
+
+    /* ========== SERVICES ========== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: rgba(255,255,255,0.02);
+      border-radius: 16px;
+      padding: 2.2rem;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, #c81e1e, #1e3a8a);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .service-card:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.08);
+      transform: translateY(-6px);
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, rgba(200,30,30,0.15), rgba(30,58,138,0.1));
+      border: 1px solid rgba(200,30,30,0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c81e1e;
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .service-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: #fff;
+    }
+
+    .service-card p {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.9rem;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    /* ========== PAST WORKS / GALLERY ========== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.02);
+    }
+
+    .gallery-item .img-placeholder {
+      height: 100%;
+      aspect-ratio: unset;
+      border-radius: 14px;
+      transition: all 0.4s ease;
+    }
+
+    .gallery-item:hover .img-placeholder {
+      border-color: rgba(200,30,30,0.4);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.2rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .gallery-overlay h4 {
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .gallery-overlay p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.8rem;
+      margin-top: 0.2rem;
+    }
+
+    /* ========== PRICING ========== */
+    .pricing-section {
+      background: linear-gradient(160deg, #06060a 0%, #0a0a14 100%);
+      padding: 5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse 50% 40% at 50% 50%, rgba(200,30,30,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .pricing-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pricing-section h3 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+      color: #fff;
+    }
+
+    .pricing-section h3 span { color: #c81e1e; }
+
+    .pricing-section > .pricing-inner > p {
+      color: rgba(255,255,255,0.4);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    .pricing-cards {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .pricing-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      min-width: 200px;
+      transition: all 0.3s ease;
+    }
+
+    .pricing-card:hover {
+      border-color: rgba(200,30,30,0.2);
+      transform: translateY(-4px);
+    }
+
+    .pricing-card .price {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: #c81e1e;
+      line-height: 1;
+    }
+
+    .pricing-card .price-label {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 0.6rem;
+      font-weight: 500;
+    }
+
+    .pricing-card .price-note {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 0.4rem;
+    }
+
+    /* ========== WHY CHOOSE US ========== */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      background: rgba(255,255,255,0.015);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.03);
+      transition: all 0.3s ease;
+    }
+
+    .feature:hover {
+      background: rgba(255,255,255,0.03);
+      border-color: rgba(200,30,30,0.1);
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(200,30,30,0.08);
+      border: 1px solid rgba(200,30,30,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      color: #c81e1e;
+      font-size: 1.6rem;
+    }
+
+    .feature h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: #fff;
+    }
+
+    .feature p {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ========== CONTACT ========== */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: #fff;
+    }
+
+    .contact-info > p {
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .contact-item-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(200,30,30,0.1);
+      border: 1px solid rgba(200,30,30,0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c81e1e;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+
+    .contact-item-content h4 {
+      font-weight: 600;
+      margin-bottom: 0.15rem;
+      color: rgba(255,255,255,0.9);
+      font-size: 0.95rem;
+    }
+
+    .contact-item-content p {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.9rem;
+      font-weight: 300;
+    }
+
+    .contact-form {
+      background: rgba(255,255,255,0.02);
+      padding: 2.2rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.82rem;
+      letter-spacing: 0.3px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1.5px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.03);
+      color: #fff;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(255,255,255,0.2);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: rgba(200,30,30,0.4);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, #c81e1e, #1e3a8a);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(200,30,30,0.2);
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      background: #020203;
+      color: rgba(255,255,255,0.3);
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .footer-logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-logo span { color: #c81e1e; }
+
+    .footer p {
+      font-size: 0.85rem;
+      font-weight: 300;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1.2rem 0;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover { color: #c81e1e; }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .navbar { padding: 0.8rem 1.2rem; }
+      .nav-links { display: none; }
+
+      .story-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .story-stats {
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-cta { flex-direction: column; align-items: center; }
+      .btn { width: 100%; max-width: 280px; justify-content: center; }
+      .pricing-cards { flex-direction: column; align-items: center; }
+      .pricing-card { width: 100%; max-width: 300px; }
+    }
+
+    /* ========== ANIMATIONS ========== */
+    html { scroll-behavior: smooth; }
+
+    .success-message {
+      display: none;
+      background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: #4ade80;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .success-message.show { display: block; }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== NAVIGATION ========== -->
+<nav class="navbar" id="navbar">
+  <a href="#home" class="nav-logo">Sam's <span>Radiator</span></a>
+  <ul class="nav-links">
+    <li><a href="#story">Story</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#works">Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge">Est. 2017</div>
+    <h1>Sam's <span>Radiator</span><br>Repair Shop</h1>
+    <p class="hero-subtitle">Expert radiator repair & custom metal fabrication. Family tradition, professional results.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Get a Quote</a>
+      <a href="#works" class="btn btn-secondary">View Our Work</a>
+    </div>
+  </div>
+  <div class="scroll-indicator" onclick="document.getElementById('story').scrollIntoView({behavior:'smooth'})">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ========== STORY ========== -->
+<section class="section-dark" id="story">
+  <div class="section">
+    <div class="section-label">Our Story</div>
+    <h2 class="section-title">Built on <span>Family</span> Tradition</h2>
+    <p class="section-subtitle">From apprentice to master craftsman — Sam's journey in metalwork.</p>
+
+    <div class="story-grid reveal">
+      <div class="story-image">
+	  
+	  <img src="sam_uncle.jpeg" alt="Sam with his uncle" style="width:100%; aspect-ratio:8/12; object-fit:cover; border-radius:16px;">
+       
+      </div>
+      <div class="story-content">
+        <h3>Learning from the <span>Best</span></h3>
+        <p>In 2017, Sam walked into his uncle's workshop with nothing but curiosity and a willingness to learn. Under his uncle's patient guidance, he mastered the art of radiator repair, metal fabrication, and precision welding.</p>
+        <p>What started as an apprenticeship quickly became a lifelong passion. Sam learned that every repair tells a story — whether it's a farmer's truck that keeps the harvest moving, or a family's car that carries them safely home.</p>
+        <div class="story-quote">"My uncle taught me that good work isn't about speed — it's about doing it right the first time. That lesson stays with me every single day."</div>
+        <p>Today, Sam runs his own shop, bringing that same dedication to every project. From complex radiator rebuilds to custom metal creations, he treats every job as if it were his own.</p>
+        <div class="story-stats">
+          <div class="stat">
+            <div class="stat-number">7+</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">1000+</div>
+            <div class="stat-label">Jobs Completed</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Satisfaction</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SERVICES ========== -->
+<section class="section-darker" id="services">
+  <div class="section">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Our <span>Services</span></h2>
+    <p class="section-subtitle">Comprehensive radiator and metalwork solutions for vehicles, farms, and homes.</p>
+
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">&#128293;</div>
+        <h3>Radiator Repair</h3>
+        <p>Complete radiator repair including leak detection, core replacement, and pressure testing. All vehicle types from daily drivers to heavy-duty trucks.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#128736;</div>
+        <h3>Metal Tank Repair</h3>
+        <p>Expert repair of metal tanks including top tank repairs. Professional welding and soldering on aluminum, brass, and copper for lasting results.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#128020;</div>
+        <h3>Chicken Feeders & Drinkers</h3>
+        <p>Custom-built durable chicken feeders and drinkers made from quality metal sheeting. Designed for farms and poultry operations of any size.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#127968;</div>
+        <h3>Chimneys</h3>
+        <p>Custom metal chimney fabrication and repair. Built to withstand high temperatures and harsh weather with precision metalwork.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#128295;</div>
+        <h3>Metal Sheet Works</h3>
+        <p>Precision metal sheet work for custom projects, brackets, panels, and specialized components. If you can dream it, we can build it.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">&#9889;</div>
+        <h3>Custom Fabrication</h3>
+        <p>Specialized custom metal fabrication for any need. From automotive parts to agricultural equipment, we bring your ideas to life.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PAST WORKS / GALLERY ========== -->
+<section class="section-dark" id="works">
+  <div class="section">
+    <div class="section-label">Portfolio</div>
+    <h2 class="section-title">Past <span>Works</span></h2>
+    <p class="section-subtitle">A glimpse of projects we've proudly completed for our clients.</p>
+
+    <div class="gallery-grid">
+      <div class="gallery-item reveal">
+        <img src="work1.jpeg" alt="top" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:16px;">
+		
+        <div class="gallery-overlay">
+          <h4>Radiator Rebuild</h4>
+          <p>Full core replacement on a heavy-duty truck</p>
+        </div>
+      </div>
+      <div class="gallery-item reveal">
+	  
+	  
+	  
+        <div class="img-placeholder">
+          <span class="icon">&#128020;</span>
+          <span class="label">CHICKEN FEEDERS</span>
+          <span class="hint">work_02.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <h4>Chicken Feeders</h4>
+          <p>Custom-built for a local poultry farm</p>
+        </div>
+      </div>
+      <div class="gallery-item reveal">
+        <div class="img-placeholder">
+          <span class="icon">&#127968;</span>
+          <span class="label">CHIMNEY FABRICATION</span>
+          <span class="hint">work_03.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <h4>Metal Chimney</h4>
+          <p>High-temperature resistant custom chimney</p>
+        </div>
+      </div>
+      <div class="gallery-item reveal">
+        <div class="img-placeholder">
+          <span class="icon">&#128295;</span>
+          <span class="label">METAL SHEET WORK</span>
+          <span class="hint">work_04.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <h4>Sheet Metal Panel</h4>
+          <p>Precision-cut panels for industrial use</p>
+        </div>
+      </div>
+      <div class="gallery-item reveal">
+        <div class="img-placeholder">
+          <span class="icon">&#128736;</span>
+          <span class="label">TANK REPAIR</span>
+          <span class="hint">work_05.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <h4>Top Tank Repair</h4>
+          <p>Professional welding and sealing</p>
+        </div>
+      </div>
+      <div class="gallery-item reveal">
+        <div class="img-placeholder">
+          <span class="icon">&#9889;</span>
+          <span class="label">CUSTOM PROJECT</span>
+          <span class="hint">work_06.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <h4>Custom Fabrication</h4>
+          <p>Bespoke metal component for a client</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PRICING ========== -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-label">Pricing</div>
+    <h3>Transparent <span>Pricing</span></h3>
+    <p>We charge upon inspection and diagnosis for most services. For top tank repairs, we offer fixed pricing so you know exactly what to expect.</p>
+    <div class="pricing-cards">
+      <div class="pricing-card reveal">
+        <div class="price">E700</div>
+        <div class="price-label">Top Tank Repair</div>
+        <div class="price-note">Fixed price</div>
+      </div>
+      <div class="pricing-card reveal">
+        <div class="price">E150</div>
+        <div class="price-label">Stripping</div>
+        <div class="price-note">If we strip it for you</div>
+      </div>
+      <div class="pricing-card reveal">
+        <div class="price">Quote</div>
+        <div class="price-label">All Other Services</div>
+        <div class="price-note">After inspection & diagnosis</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== WHY CHOOSE US ========== -->
+<section class="section-darker" id="why-us">
+  <div class="section">
+    <div class="section-label">Why Us</div>
+    <h2 class="section-title">Why Choose <span>Sam's</span>?</h2>
+    <p class="section-subtitle">What sets us apart from the rest.</p>
+
+    <div class="features-grid">
+      <div class="feature reveal">
+        <div class="feature-icon">&#128104;&#8205;&#128295;</div>
+        <h3>Expert Craftsmanship</h3>
+        <p>Trained under a master mechanic with years of hands-on experience in every repair.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-icon">&#9889;</div>
+        <h3>Fast Turnaround</h3>
+        <p>Most repairs completed quickly. Get back on the road or farm fast.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-icon">&#128176;</div>
+        <h3>Fair Pricing</h3>
+        <p>Honest quotes after inspection. No hidden fees, no surprises.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-icon">&#128737;</div>
+        <h3>Quality Guarantee</h3>
+        <p>Every repair backed by our workmanship guarantee. We stand behind our work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section class="section-dark" id="contact">
+  <div class="section">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Contact <span>Us</span></h2>
+    <p class="section-subtitle">Ready to get your radiator fixed or need custom metalwork? Reach out today.</p>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>Contact Information</h3>
+        <p>We'd love to hear from you. Reach out for a quote or to schedule a repair.</p>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">&#128205;</div>
+          <div class="contact-item-content">
+            <h4>Location</h4>
+            <p>opposite voctim second gate</p>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">&#128222;</div>
+          <div class="contact-item-content">
+            <h4>Phone</h4>
+            <p>7635 5800 &nbsp;|&nbsp; 7943 0209</p>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">&#128231;</div>
+          <div class="contact-item-content">
+            <h4>Email</h4>
+			<p>Sam.radiator-repair@gmail.com</p>
+            
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">&#128336;</div>
+          <div class="contact-item-content">
+            <h4>Business Hours</h4>
+            <p>Mon - Sat: 7:00 AM - 5:30 PM<br>Sun: Closed</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form reveal">
+        <div class="success-message" id="successMsg">
+          Message sent! We'll get back to you soon.
+        </div>
+        <form id="contactForm" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="John Doe" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="7635 5800">
+          </div>
+          <div class="form-group">
+            <label for="service">Service Needed</label>
+            <select id="service" name="service" required>
+              <option value="">Select a service...</option>
+              <option value="radiator-repair">Radiator Repair</option>
+              <option value="metal-tank-repair">Metal Tank Repair</option>
+              <option value="chicken-feeders">Chicken Feeders & Drinkers</option>
+              <option value="chimneys">Chimneys</option>
+              <option value="metal-sheet">Metal Sheet Works</option>
+              <option value="custom-fabrication">Custom Fabrication</option>
+              <option value="other">Other / Not Sure</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us about your vehicle, farm, or project..."></textarea>
+          </div>
+          <button type="submit" class="form-submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="footer-logo">Sam's <span>Radiator</span> Repair</div>
+  <div class="footer-links">
+    <a href="#story">Story</a>
+    <a href="#services">Services</a>
+    <a href="#works">Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <p>&copy; 2026 Sam's Radiator Repair Shop. All rights reserved. Family-owned & operated since 2017.</p>
+</footer>
+
+<script>
+  // Form handling
+  function handleSubmit(e) {
+    e.preventDefault();
+    const successMsg = document.getElementById('successMsg');
+    const form = document.getElementById('contactForm');
+    successMsg.classList.add('show');
+    form.reset();
+    setTimeout(() => { successMsg.classList.remove('show'); }, 5000);
+  }
+
+  // Scroll reveal animation
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Navbar background on scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      navbar.style.background = 'rgba(5,5,8,0.95)';
+      navbar.style.boxShadow = '0 4px 30px rgba(0,0,0,0.3)';
+    } else {
+      navbar.style.background = 'rgba(5,5,8,0.85)';
+      navbar.style.boxShadow = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
